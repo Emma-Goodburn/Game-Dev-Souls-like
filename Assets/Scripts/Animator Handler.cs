@@ -4,15 +4,17 @@ namespace Player
 {
   public class AnimatorHandler : MonoBehaviour
   {
+    PlayerManager playerManager;
     public Animator animator;
-    public InputHandler inputHandler;
-    public PlayerMovement playerMovement;
+    InputHandler inputHandler;
+    PlayerMovement playerMovement;
     int vertical;
     int horizontal;
     public bool canRotate;
 
     public void Initialize()
     {
+      playerManager = GetComponentInParent<PlayerManager>();
       animator = GetComponent<Animator>();
       inputHandler = GetComponentInParent<InputHandler>();
       playerMovement = GetComponentInParent<PlayerMovement>();
@@ -20,7 +22,7 @@ namespace Player
       horizontal = Animator.StringToHash("Horizontal");
     }
 
-    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
     {
       float v = 0;
 
@@ -67,6 +69,12 @@ namespace Player
         h = 0;
       }
 
+      if (isSprinting)
+      {
+        v = 2;
+        h = horizontalMovement;
+      }
+
       animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
       animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
     }
@@ -90,15 +98,15 @@ namespace Player
     
     private void OnAnimatorMove()
     {
-      if (inputHandler.isInteracting == false)
+      if (playerManager.isInteracting == false)
         return;
 
       float delta = Time.deltaTime;
-      playerMovement.rigidbody.drag = 0;
+      playerMovement.rigidbody.linearDamping = 0;
       Vector3 deltaPosition = animator.deltaPosition;
       deltaPosition.y = 0;
       Vector3 velocity = deltaPosition / delta;
-      playerMovement.rigidbody.velocity = velocity;
+      playerMovement.rigidbody.linearVelocity = velocity;
     }
   }
 }

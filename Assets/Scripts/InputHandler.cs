@@ -10,30 +10,26 @@ namespace Player
     public float mouseX;
     public float mouseY;
 
-    public bool b_Input;
+    public bool spaceInput;
+    public bool shiftInput;
+    public bool leftMouseInput;
+    public bool rightMouseInput;
+
     public bool rollFlag;
-    public bool isInteracting;
+    public bool sprintFlag;
+
 
     PlayerControls inputActions;
-    CameraHandler cameraHandler;
+    PlayerAttacker playerAttacker;
+    PlayerInventory playerInventory;
 
     Vector2 movementInput;
     Vector2 cameraInput;
 
     private void Awake()
     {
-      cameraHandler = CameraHandler.singleton;
-    }
-
-    private void FixedUpdate()
-    {
-      float delta = Time.fixedDeltaTime;
-
-      if (cameraHandler != null)
-      {
-        cameraHandler.FollowTarget(delta);
-        cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-      }
+      playerAttacker = GetComponent<PlayerAttacker>();
+      playerInventory = GetComponent<PlayerInventory>();
     }
 
     public void OnEnable()
@@ -55,11 +51,13 @@ namespace Player
 
     public void TickInput(float delta)
     {
-      MoveInput(delta);
+      HandleMoveInput(delta);
       HandleRollInput(delta);
+      HandleSprintInput(delta);
+      HandleAttackInput(delta);
     }
 
-    private void MoveInput(float delta)
+    private void HandleMoveInput(float delta)
     {
       horizontal = movementInput.x;
       vertical = movementInput.y;
@@ -70,10 +68,35 @@ namespace Player
 
     private void HandleRollInput(float delta)
     {
-      b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
-      if (b_Input)
+      spaceInput = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+      if (spaceInput)
       {
         rollFlag = true;
+      }
+    }
+
+    private void HandleSprintInput(float delta)
+    {
+      shiftInput = inputActions.PlayerActions.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+      if (shiftInput)
+      {
+        sprintFlag = true;
+      }
+    }
+
+    private void HandleAttackInput(float delta)
+    {
+      inputActions.PlayerActions.LightAttack.performed += i => leftMouseInput = true;
+      inputActions.PlayerActions.HeavyAttack.performed += i => rightMouseInput = true;
+
+      if (leftMouseInput)
+      {
+        playerAttacker.HandleLightAttack(playerInventory.Weapon);
+      }
+
+      if (rightMouseInput)
+      {
+        playerAttacker.HandleHeavyAttack(playerInventory.Weapon);
       }
     }
   }
