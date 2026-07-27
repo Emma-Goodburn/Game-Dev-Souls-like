@@ -1,19 +1,29 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Player
 {
   public class PlayerStats : MonoBehaviour
   {
+    // Player info
     public int maxHealth;
     public int maxStamina;
     public int currentHealth;
     public int currentStamina;
-    public bool playerIsDead;
-    public bool staminaEmpty;
 
+    // Lock out variables
+    public bool playerIsDead;
+
+    // Stamina regen
+    private bool allowStaminaRegen;
+    public int staminaRegenRate;
+    public float staminaRegenDelay;
+
+    // Health and stamina bar objects
     public HealthBar healthBar;
     public StaminaBar staminaBar;
 
+    // Required classes
     AnimatorHandler animatorHandler;
 
     private void Awake()
@@ -21,6 +31,7 @@ namespace Player
       animatorHandler = GetComponentInChildren<AnimatorHandler>();
     }
 
+    // Reset variables
     void Start()
     {
       currentHealth = maxHealth;
@@ -29,9 +40,19 @@ namespace Player
 
       currentStamina = maxStamina;
       staminaBar.SetMaxStamina(maxStamina);
-      staminaEmpty = false;
     }
 
+    // Regen stamina unless regen disabled
+    private void Update()
+    {
+      if (allowStaminaRegen && currentStamina < maxStamina)
+      {
+        currentStamina += staminaRegenRate;
+        staminaBar.SetCurrentStamina(currentStamina);
+      }
+    }
+
+    // Reduce health and trigger damage or death animations
     public void TakeDamage(int damage)
     {
       currentHealth -= damage;
@@ -46,15 +67,30 @@ namespace Player
       }
     }
 
+    // Reduce total stamina and pause regen
     public void UseStamina(int cost)
     {
       currentStamina -= cost;
       staminaBar.SetCurrentStamina(currentStamina);
+      allowStaminaRegen = false;
+      StartCoroutine(PauseStaminaRegen(staminaRegenDelay));
+    }
 
-      if (currentStamina <= 0)
+    // Prevent stamina regen until delayTime has passed
+    private IEnumerator PauseStaminaRegen(float delayTime)
+    {
+      yield return new WaitForSeconds(delayTime);
+
+      allowStaminaRegen = true;
+    }
+    
+    // Heal player on damage dealt
+    public void Lifesteal(int damage)
+    {
+      if (currentHealth < maxHealth)
       {
-        currentStamina = 0;
-        staminaEmpty = true;
+        currentHealth += damage;
+        healthBar.SetCurrentHealth(currentHealth);
       }
     }
   }

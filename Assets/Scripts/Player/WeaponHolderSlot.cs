@@ -24,7 +24,7 @@ namespace Player
       }
     }
 
-    public void LoadWeaponModel(WeaponItem weaponItem)
+    public void LoadWeaponModel(Item.WeaponItem weaponItem)
     {
       UnloadWeaponAndDestroy();
 

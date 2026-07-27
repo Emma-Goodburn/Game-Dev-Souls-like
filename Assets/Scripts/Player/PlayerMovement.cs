@@ -75,7 +75,7 @@ namespace Player
 
       float speed = movementSpeed;
 
-      if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f && !playerStats.staminaEmpty)
+      if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f && playerStats.currentStamina > 2)
       {
         speed = sprintSpeed;
         playerManager.isSprinting = true;
@@ -99,9 +99,9 @@ namespace Player
       }
     }
     
-    public void HandleRollingAndSprinting(float delta)
+    public void HandleRolling(float delta)
     {
-      if (animatorHandler.animator.GetBool("isInteracting") || playerStats.staminaEmpty)
+      if (animatorHandler.animator.GetBool("isInteracting") || playerStats.currentStamina < 120)
         return;
 
       if (inputHandler.rollFlag)

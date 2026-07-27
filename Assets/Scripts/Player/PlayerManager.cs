@@ -34,7 +34,7 @@ namespace Player
       isInteracting = animator.GetBool("isInteracting");
       inputHandler.TickInput(delta);
       playerMovement.HandleMovement(delta);
-      playerMovement.HandleRollingAndSprinting(delta);
+      playerMovement.HandleRolling(delta);
     }
 
     private void FixedUpdate()

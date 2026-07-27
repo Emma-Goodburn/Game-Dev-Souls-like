@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player
+namespace Enemy
 {
   public class EnemyStats : MonoBehaviour
   {

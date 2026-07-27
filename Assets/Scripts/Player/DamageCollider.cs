@@ -6,7 +6,7 @@ namespace Player
   {
     Collider damageCollider;
 
-    public int currentWeaponDamage = 25;
+    public int currentWeaponDamage = 10;
 
     private void Awake()
     {
@@ -30,21 +30,17 @@ namespace Player
       if (collision.tag == "PlayerTag")
       {
         PlayerStats playerStats = collision.GetComponent<PlayerStats>();
-
-        if (playerStats != null)
-        {
-          playerStats.TakeDamage(currentWeaponDamage);
-        }
+        playerStats?.TakeDamage(currentWeaponDamage);
       }
 
       if (collision.tag == "EnemyTag")
       {
-        EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
-
-        if (enemyStats != null)
-        {
-          enemyStats.TakeDamage(currentWeaponDamage);
-        }
+        PlayerStats playerStats = GetComponentInParent<PlayerStats>();
+        Enemy.EnemyStats enemyStats = collision.GetComponent<Enemy.EnemyStats>();
+        enemyStats?.TakeDamage(currentWeaponDamage);
+        
+        if (!enemyStats.enemyIsDead)
+          playerStats?.Lifesteal(currentWeaponDamage/10);
       }
     }
   }

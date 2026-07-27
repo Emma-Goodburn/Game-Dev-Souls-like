@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player
+namespace Item
 {
   [CreateAssetMenu(menuName = "Items/Weapon Item")]
   public class WeaponItem : Item

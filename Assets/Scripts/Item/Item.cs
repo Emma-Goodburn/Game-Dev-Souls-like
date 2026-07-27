@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player
+namespace Item
 {
   public class Item : ScriptableObject
   {

@@ -12,7 +12,7 @@ namespace Player
     {
       weaponHolderSlot = GetComponentInChildren<WeaponHolderSlot>();
     }
-    public void LoadWeapon(WeaponItem weaponItem)
+    public void LoadWeapon(Item.WeaponItem weaponItem)
     {
       weaponHolderSlot.LoadWeaponModel(weaponItem);
       LoadWeaponDamageCollider();
