@@ -4,18 +4,16 @@ namespace Player
 {
   public class PlayerInventory : MonoBehaviour
   {
-    WeaponHolderSlot weaponHolderSlot;
-
+    WeaponSlotManager weaponSlotManager;
     public WeaponItem Weapon;
 
-    private void Awake()
-    {
-      weaponHolderSlot = GetComponentInChildren<WeaponHolderSlot>();
+    private void Awake() {
+      weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
     }
 
     private void Start()
     {
-      weaponHolderSlot.LoadWeaponModel(Weapon);
+      weaponSlotManager.LoadWeapon(Weapon);
     }
   }
 }

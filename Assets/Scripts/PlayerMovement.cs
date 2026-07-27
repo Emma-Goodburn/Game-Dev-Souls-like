@@ -4,6 +4,7 @@ namespace Player
 {
   public class PlayerMovement : MonoBehaviour
   {
+    PlayerStats playerStats;
     PlayerManager playerManager;
     Transform cameraObject;
     InputHandler inputHandler;
@@ -27,6 +28,7 @@ namespace Player
 
     void Start()
     {
+      playerStats = GetComponent<PlayerStats>();
       playerManager = GetComponent<PlayerManager>();
       rigidbody = GetComponent<Rigidbody>();
       inputHandler = GetComponent<InputHandler>();
@@ -63,8 +65,8 @@ namespace Player
 
     public void HandleMovement(float delta)
     {
-      // if (inputHandler.rollFlag)
-      //   return;
+      if (animatorHandler.animator.GetBool("isInteracting"))
+        return;
 
       moveDirection = cameraObject.forward * inputHandler.vertical;
       moveDirection += cameraObject.right * inputHandler.horizontal;
@@ -73,10 +75,12 @@ namespace Player
 
       float speed = movementSpeed;
 
-      if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f)
+      if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5f && !playerStats.staminaEmpty)
       {
         speed = sprintSpeed;
         playerManager.isSprinting = true;
+        // Define sprint cost elsewhere
+        playerStats.UseStamina(2);
       }
       else
       {
@@ -97,8 +101,7 @@ namespace Player
     
     public void HandleRollingAndSprinting(float delta)
     {
-
-      if (animatorHandler.animator.GetBool("isInteracting"))
+      if (animatorHandler.animator.GetBool("isInteracting") || playerStats.staminaEmpty)
         return;
 
       if (inputHandler.rollFlag)
@@ -112,6 +115,8 @@ namespace Player
           moveDirection.y = 0;
           Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
           myTransform.rotation = rollRotation;
+          // Define roll cost elsewhere
+          playerStats.UseStamina(120);
         }
       }
     }

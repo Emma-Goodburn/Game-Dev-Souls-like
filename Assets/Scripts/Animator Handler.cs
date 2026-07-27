@@ -8,12 +8,14 @@ namespace Player
     public Animator animator;
     InputHandler inputHandler;
     PlayerMovement playerMovement;
+    PlayerStats playerStats;
     int vertical;
     int horizontal;
     public bool canRotate;
 
     public void Initialize()
     {
+      playerStats = GetComponentInParent<PlayerStats>();
       playerManager = GetComponentInParent<PlayerManager>();
       animator = GetComponent<Animator>();
       inputHandler = GetComponentInParent<InputHandler>();
@@ -81,6 +83,9 @@ namespace Player
 
     public void PlayTargetAnimation(string targetAnim, bool isInteracting)
     {
+      if (playerStats.playerIsDead)
+        return;
+        
       animator.applyRootMotion = isInteracting;
       animator.SetBool("isInteracting", isInteracting);
       animator.CrossFade(targetAnim, 0.2f);
