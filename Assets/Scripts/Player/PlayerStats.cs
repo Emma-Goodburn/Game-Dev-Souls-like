@@ -3,16 +3,11 @@ using UnityEngine;
 
 namespace Player
 {
-  public class PlayerStats : MonoBehaviour
+  public class PlayerStats : Character.CharacterStats
   {
     // Player info
-    public int maxHealth;
     public int maxStamina;
-    public int currentHealth;
     public int currentStamina;
-
-    // Lock out variables
-    public bool playerIsDead;
 
     // Stamina regen
     private bool allowStaminaRegen;
@@ -24,11 +19,11 @@ namespace Player
     public StaminaBar staminaBar;
 
     // Required classes
-    AnimatorHandler animatorHandler;
+    PlayerAnimatorHandler animatorHandler;
 
     private void Awake()
     {
-      animatorHandler = GetComponentInChildren<AnimatorHandler>();
+      animatorHandler = GetComponentInChildren<PlayerAnimatorHandler>();
     }
 
     // Reset variables
@@ -36,7 +31,7 @@ namespace Player
     {
       currentHealth = maxHealth;
       healthBar.SetMaxHealth(maxHealth);
-      playerIsDead = false;
+      isDead = false;
 
       currentStamina = maxStamina;
       staminaBar.SetMaxStamina(maxStamina);
@@ -63,7 +58,7 @@ namespace Player
       {
         currentHealth = 0;
         animatorHandler.PlayTargetAnimation("Death", true);
-        playerIsDead = true;
+        isDead = true;
       }
     }
 

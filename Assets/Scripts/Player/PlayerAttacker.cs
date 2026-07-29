@@ -4,12 +4,12 @@ namespace Player
 {
   public class PlayerAttacker : MonoBehaviour
   {
-    AnimatorHandler animatorHandler;
+    PlayerAnimatorHandler animatorHandler;
     PlayerStats playerStats;
 
     private void Awake()
     {
-      animatorHandler = GetComponentInChildren<AnimatorHandler>();
+      animatorHandler = GetComponentInChildren<PlayerAnimatorHandler>();
       playerStats = GetComponent<PlayerStats>();
     }
 

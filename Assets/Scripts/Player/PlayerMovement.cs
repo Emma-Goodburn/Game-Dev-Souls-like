@@ -13,7 +13,7 @@ namespace Player
     [HideInInspector]
     public Transform myTransform;
     [HideInInspector]
-    public AnimatorHandler animatorHandler;
+    public PlayerAnimatorHandler animatorHandler;
 
     public new Rigidbody rigidbody;
     public GameObject normalCamera;
@@ -32,7 +32,7 @@ namespace Player
       playerManager = GetComponent<PlayerManager>();
       rigidbody = GetComponent<Rigidbody>();
       inputHandler = GetComponent<InputHandler>();
-      animatorHandler = GetComponentInChildren<AnimatorHandler>();
+      animatorHandler = GetComponentInChildren<PlayerAnimatorHandler>();
       cameraObject = Camera.main.transform;
       myTransform = transform;
       animatorHandler.Initialize();

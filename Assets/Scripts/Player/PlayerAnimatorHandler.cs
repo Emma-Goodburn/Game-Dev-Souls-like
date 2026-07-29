@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace Player
 {
-  public class AnimatorHandler : MonoBehaviour
+  public class PlayerAnimatorHandler : Character.CharacterAnimatorHandler
   {
     PlayerManager playerManager;
-    public Animator animator;
     InputHandler inputHandler;
     PlayerMovement playerMovement;
     PlayerStats playerStats;
@@ -83,7 +82,7 @@ namespace Player
 
     public void PlayTargetAnimation(string targetAnim, bool isInteracting)
     {
-      if (playerStats.playerIsDead)
+      if (playerStats.isDead)
         return;
         
       animator.applyRootMotion = isInteracting;

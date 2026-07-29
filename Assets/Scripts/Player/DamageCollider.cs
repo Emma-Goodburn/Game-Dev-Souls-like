@@ -39,7 +39,7 @@ namespace Player
         Enemy.EnemyStats enemyStats = collision.GetComponent<Enemy.EnemyStats>();
         enemyStats?.TakeDamage(currentWeaponDamage);
         
-        if (!enemyStats.enemyIsDead)
+        if (!enemyStats.isDead)
           playerStats?.Lifesteal(currentWeaponDamage/10);
       }
     }

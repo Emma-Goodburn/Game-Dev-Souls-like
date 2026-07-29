@@ -2,12 +2,8 @@ using UnityEngine;
 
 namespace Enemy
 {
-  public class EnemyStats : MonoBehaviour
+  public class EnemyStats : Character.CharacterStats
   {
-    public int maxHealth = 100;
-    public int currentHealth;
-    public bool enemyIsDead;
-
     Animator animator;
 
     private void Awake()
@@ -18,7 +14,7 @@ namespace Enemy
     void Start()
     {
       currentHealth = maxHealth;
-      enemyIsDead = false;
+      isDead = false;
     }
 
     public void TakeDamage(int damage)
@@ -31,7 +27,7 @@ namespace Enemy
       {
         currentHealth = 0;
         animator.Play("Death");
-        enemyIsDead = true;
+        isDead = true;
       }
     }
   }
