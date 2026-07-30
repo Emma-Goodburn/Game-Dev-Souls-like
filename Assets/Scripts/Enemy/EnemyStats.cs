@@ -21,12 +21,12 @@ namespace Enemy
     {
       currentHealth -= damage;
       if (currentHealth > 0)
-        animator.Play("Damage");
+        animator.Play("GetHit_1");
 
       if (currentHealth <= 0)
       {
         currentHealth = 0;
-        animator.Play("Death");
+        animator.Play("Dead");
         isDead = true;
       }
     }

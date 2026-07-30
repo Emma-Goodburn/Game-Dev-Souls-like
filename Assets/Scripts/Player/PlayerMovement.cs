@@ -20,9 +20,9 @@ namespace Player
 
     // Movement stats
     [SerializeField]
-    float movementSpeed = 5;
+    float movementSpeed = 10;
     [SerializeField]
-    float sprintSpeed = 7;
+    float sprintSpeed = 14;
     [SerializeField]
     float rotationSpeed = 10;
 
@@ -55,17 +55,13 @@ namespace Player
       if (targetDir == Vector3.zero)
         targetDir = myTransform.forward;
 
-      float rs = rotationSpeed;
-
-      Quaternion tr = Quaternion.LookRotation(targetDir);
-      Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
-
-      myTransform.rotation = targetRotation;
+      Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+      myTransform.rotation = Quaternion.Slerp(myTransform.rotation, targetRotation, rotationSpeed * delta);
     }
 
     public void HandleMovement(float delta)
     {
-      if (animatorHandler.animator.GetBool("isInteracting"))
+      if (playerManager.isInteracting)
         return;
 
       moveDirection = cameraObject.forward * inputHandler.vertical;
@@ -101,7 +97,7 @@ namespace Player
     
     public void HandleRolling(float delta)
     {
-      if (animatorHandler.animator.GetBool("isInteracting") || playerStats.currentStamina < 120)
+      if (playerManager.isInteracting || playerStats.currentStamina < 120)
         return;
 
       if (inputHandler.rollFlag)

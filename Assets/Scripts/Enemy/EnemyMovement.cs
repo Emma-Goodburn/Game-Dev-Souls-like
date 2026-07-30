@@ -14,7 +14,7 @@ namespace Enemy
 
     public float distanceFromTarget;
     public float stoppingDistance = 1f;
-    public float rotationSpeed = 15;
+    public float rotationSpeed = 10;
 
     int vertical;
     int horizontal;
@@ -22,7 +22,7 @@ namespace Enemy
     private void Awake()
     {
       enemyManager = GetComponent<EnemyManager>();
-      navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+      navMeshAgent = GetComponent<NavMeshAgent>();
       vertical = Animator.StringToHash("Vertical");
       horizontal = Animator.StringToHash("Horizontal");
       enemyRigidbody = GetComponent<Rigidbody>();
@@ -43,44 +43,30 @@ namespace Enemy
       distanceFromTarget = Vector3.Distance(player.transform.position, transform.position);
       float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-      if (enemyManager.isPerformingAction)
+      if (distanceFromTarget > stoppingDistance)
+      {
+        enemyAnimatorHandler.animator.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+        navMeshAgent.enabled = true;
+      }
+      else if (distanceFromTarget <= stoppingDistance)
       {
         enemyAnimatorHandler.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
         navMeshAgent.enabled = false;
       }
-      else
-      {
-        if (distanceFromTarget > stoppingDistance)
-        {
-          enemyAnimatorHandler.animator.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
-          navMeshAgent.enabled = true;
-        }
-        else if (distanceFromTarget <= stoppingDistance)
-        {
-          enemyAnimatorHandler.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
-        }
-      }
 
       HandleRotateToTarget();
-      navMeshAgent.transform.localPosition = Vector3.zero;
-      navMeshAgent.transform.localRotation = Quaternion.identity;
     }
     
-    private void HandleRotateToTarget()
+    public void HandleRotateToTarget()
     {
-      if (enemyManager.isPerformingAction)
+      if (enemyManager.isInteracting || distanceFromTarget <= stoppingDistance)
       {
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0;
         direction.Normalize();
 
-        if (direction == Vector3.zero)
-        {
-          direction = transform.forward;
-        }
-
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed / Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
       }
       else
       {
@@ -90,7 +76,7 @@ namespace Enemy
         navMeshAgent.enabled = true;
         navMeshAgent.SetDestination(player.transform.position);
         enemyRigidbody.linearVelocity = targetVelocity;
-        transform.rotation = Quaternion.Slerp(transform.rotation, navMeshAgent.transform.rotation, rotationSpeed / Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, navMeshAgent.transform.rotation, rotationSpeed * Time.deltaTime);
       }
     }
   }
