@@ -14,6 +14,7 @@ namespace Player
     public bool shiftInput;
     public bool leftMouseInput;
     public bool rightMouseInput;
+    public bool eInput;
 
     public bool rollFlag;
     public bool sprintFlag;
@@ -22,6 +23,8 @@ namespace Player
     PlayerControls inputActions;
     PlayerAttacker playerAttacker;
     PlayerInventory playerInventory;
+    PlayerManager playerManager;
+    Scene.ViewManager viewManager;
 
     Vector2 movementInput;
     Vector2 cameraInput;
@@ -30,6 +33,8 @@ namespace Player
     {
       playerAttacker = GetComponent<PlayerAttacker>();
       playerInventory = GetComponent<PlayerInventory>();
+      playerManager = GetComponent<PlayerManager>();
+      viewManager = GetComponent<Scene.ViewManager>();
     }
 
     public void OnEnable()
@@ -55,6 +60,7 @@ namespace Player
       HandleRollInput(delta);
       HandleSprintInput(delta);
       HandleAttackInput(delta);
+      HandleInteractInput(delta);
     }
 
     private void HandleMoveInput(float delta)
@@ -97,6 +103,15 @@ namespace Player
       if (rightMouseInput)
       {
         playerAttacker.HandleHeavyAttack(playerInventory.Weapon);
+      }
+    }
+
+    private void HandleInteractInput(float delta)
+    {
+      eInput = inputActions.PlayerActions.Interact.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+      if (eInput && playerManager.inTrigger)
+      {
+        viewManager.ChangeScene("Level1");
       }
     }
   }

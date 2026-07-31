@@ -14,6 +14,8 @@ namespace Player
 
     public bool isSprinting;
 
+    public bool inTrigger;
+
     private void Awake()
     {
       cameraHandler = FindObjectOfType<CameraHandler>();
@@ -55,6 +57,8 @@ namespace Player
       inputHandler.leftMouseInput = false;
       inputHandler.rightMouseInput = false;
     }
+
+
 
   }
 }
