@@ -6,7 +6,7 @@ namespace Player
   {
     WeaponHolderSlot weaponHolderSlot;
 
-    DamageCollider damageCollider;
+    Character.DamageCollider damageCollider;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ namespace Player
     
     private void LoadWeaponDamageCollider()
     {
-      damageCollider = weaponHolderSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+      damageCollider = weaponHolderSlot.currentWeaponModel.GetComponentInChildren<Character.DamageCollider>();
     }
 
     public void OpenDamageCollider()

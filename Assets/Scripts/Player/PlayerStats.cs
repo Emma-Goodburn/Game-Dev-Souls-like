@@ -10,13 +10,20 @@ namespace Player
     public int currentStamina;
 
     // Stamina regen
-    private bool allowStaminaRegen;
+    private float currentStaminaRecoveryTime;
     public int staminaRegenRate;
     public float staminaRegenDelay;
 
     // Health and stamina bar objects
     public HealthBar healthBar;
     public StaminaBar staminaBar;
+
+    // Stamina costs
+    public int rollCost = 120;
+    public int sprintCost = 1;
+    public int lightAttackCost = 50;
+    public int heavyAttackCost = 100;
+
 
     // Required classes
     PlayerAnimatorHandler animatorHandler;
@@ -40,10 +47,14 @@ namespace Player
     // Regen stamina unless regen disabled
     private void Update()
     {
-      if (allowStaminaRegen && currentStamina < maxStamina)
+      if (currentStaminaRecoveryTime <= 0 && currentStamina < maxStamina)
       {
         currentStamina += staminaRegenRate;
         staminaBar.SetCurrentStamina(currentStamina);
+      }
+      if (currentStaminaRecoveryTime > 0)
+      {
+        currentStaminaRecoveryTime -= Time.deltaTime;
       }
     }
 
@@ -52,7 +63,9 @@ namespace Player
     {
       currentHealth -= damage;
       healthBar.SetCurrentHealth(currentHealth);
-      animatorHandler.PlayTargetAnimation("Damage", true);
+
+      if (currentHealth > 0)
+        animatorHandler.PlayTargetAnimation("Damage", true);
 
       if (currentHealth <= 0)
       {
@@ -67,16 +80,7 @@ namespace Player
     {
       currentStamina -= cost;
       staminaBar.SetCurrentStamina(currentStamina);
-      allowStaminaRegen = false;
-      StartCoroutine(PauseStaminaRegen(staminaRegenDelay));
-    }
-
-    // Prevent stamina regen until delayTime has passed
-    private IEnumerator PauseStaminaRegen(float delayTime)
-    {
-      yield return new WaitForSeconds(delayTime);
-
-      allowStaminaRegen = true;
+      currentStaminaRecoveryTime = staminaRegenDelay;
     }
     
     // Heal player on damage dealt

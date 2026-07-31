@@ -18,3 +18,5 @@ MonoBehaviour:
   isUnarmed: 0
   oneHandedLightAttack: LightAttack
   oneHandedHeavyAttack: HeavyAttack
+  lightAttackDamage: 30
+  heavyAttackDamage: 50

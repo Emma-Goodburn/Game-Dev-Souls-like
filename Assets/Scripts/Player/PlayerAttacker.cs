@@ -7,6 +7,8 @@ namespace Player
     PlayerAnimatorHandler animatorHandler;
     PlayerStats playerStats;
 
+    public bool isHeavyAttack = false;
+
     private void Awake()
     {
       animatorHandler = GetComponentInChildren<PlayerAnimatorHandler>();
@@ -17,9 +19,10 @@ namespace Player
     {
       if (playerStats.currentStamina < 50)
         return;
-        
+
+      isHeavyAttack = false;
       animatorHandler.PlayTargetAnimation(weapon.oneHandedLightAttack, true);
-      playerStats.UseStamina(50);
+      playerStats.UseStamina(playerStats.lightAttackCost);
     }
 
     public void HandleHeavyAttack(Item.WeaponItem weapon)
@@ -27,8 +30,9 @@ namespace Player
       if (playerStats.currentStamina < 100)
         return;
 
+      isHeavyAttack = true;
       animatorHandler.PlayTargetAnimation(weapon.oneHandedHeavyAttack, true);
-      playerStats.UseStamina(100);
+      playerStats.UseStamina(playerStats.heavyAttackCost);
     }
   }
 }

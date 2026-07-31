@@ -13,5 +13,7 @@ namespace Enemy
 
     public float minimumAttackDistance = 0;
     public float maximumAttackDistance = 5;
+
+    public int damage;
   }
 }

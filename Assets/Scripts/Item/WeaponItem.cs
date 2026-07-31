@@ -10,5 +10,8 @@ namespace Item
 
     public string oneHandedLightAttack;
     public string oneHandedHeavyAttack;
+
+    public int lightAttackDamage;
+    public int heavyAttackDamage;
   }
 }

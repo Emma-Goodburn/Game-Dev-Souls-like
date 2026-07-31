@@ -15,7 +15,8 @@ MonoBehaviour:
   actionAnimation: AttackL
   attackScore: 3
   recoveryTime: 2
-  maximumAttackAngle: 10
-  minimumAttackAngle: -10
+  maximumAttackAngle: 15
+  minimumAttackAngle: -5
   minimumAttackDistance: 0
-  maximumAttackDistance: 6
+  maximumAttackDistance: 5.5
+  damage: 20

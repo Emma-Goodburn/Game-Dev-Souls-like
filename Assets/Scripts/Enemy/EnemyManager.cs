@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Enemy
 {
@@ -6,10 +7,21 @@ namespace Enemy
   {
     EnemyMovement enemyMovement;
     EnemyAnimatorHandler enemyAnimatorHandler;
-    public bool isInteracting;
+    EnemyStats enemyStats;
+    public Rigidbody enemyRigidbody;
+    public NavMeshAgent navMeshAgent;
 
     public EnemyAttackAction[] enemyAttacks;
     public EnemyAttackAction currentAttack;
+
+    public State currentState;
+    public bool isInteracting;
+
+    public float distanceFromTarget;
+    public float rotationSpeed = 10;
+    public float maximumAttackRange = 5.5f;
+
+    public GameObject player;
 
     public float currentRecoveryTime = 0;
 
@@ -17,6 +29,15 @@ namespace Enemy
     {
       enemyMovement = GetComponent<EnemyMovement>();
       enemyAnimatorHandler = GetComponentInChildren<EnemyAnimatorHandler>();
+      enemyStats = GetComponent<EnemyStats>();
+      navMeshAgent = GetComponent<NavMeshAgent>();
+      enemyRigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+      navMeshAgent.enabled = false;
+      enemyRigidbody.isKinematic = false;
     }
 
     private void Update() {
@@ -29,89 +50,20 @@ namespace Enemy
 
     private void HandleStateMachine()
     {
-      if (enemyMovement.player != null)
+      if (currentState != null)
       {
-        enemyMovement.distanceFromTarget = Vector3.Distance(enemyMovement.player.transform.position, transform.position);
-      }
+        State nextState = currentState.Tick(this, enemyStats, enemyAnimatorHandler);
 
-      if (enemyMovement.player == null)
-      {
-        enemyMovement.player = GameObject.Find("Player");
-      }
-      else if (enemyMovement.distanceFromTarget > enemyMovement.stoppingDistance)
-      {
-        enemyMovement.HandleMoveToTarget();
-      }
-      else if (enemyMovement.distanceFromTarget <= enemyMovement.stoppingDistance)
-      {
-        AttackTarget();
+        if (nextState != null)
+        {
+          SwitchToNextState(nextState);
+        }
       }
     }
 
-    private void AttackTarget()
+    private void SwitchToNextState(State state)
     {
-      if (isInteracting)
-        return;
-
-      if (currentAttack == null)
-      {
-        enemyMovement.HandleRotateToTarget();
-        GetNewAttack();
-      }
-      else
-      {
-        isInteracting = true;
-        enemyAnimatorHandler.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
-        currentRecoveryTime = currentAttack.recoveryTime;
-        enemyAnimatorHandler.PlayTargetAnimation(currentAttack.actionAnimation, true);
-        currentAttack = null;
-      }
-    }
-
-    private void GetNewAttack()
-    {
-      Vector3 targetDirection = enemyMovement.player.transform.position - transform.position;
-      float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
-      enemyMovement.distanceFromTarget = Vector3.Distance(enemyMovement.player.transform.position, transform.position);
-
-      int maxScore = 0;
-
-      for (int i = 0; i < enemyAttacks.Length; i++)
-      {
-        EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-        if (enemyMovement.distanceFromTarget <= enemyAttackAction.maximumAttackDistance && enemyMovement.distanceFromTarget <= enemyAttackAction.minimumAttackDistance)
-        {
-          if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle <= enemyAttackAction.minimumAttackAngle)
-          {
-            maxScore += enemyAttackAction.attackScore;
-          }
-        }
-      }
-
-      int randomValue = Random.Range(0, maxScore);
-      int temporaryScore = 0;
-
-      for (int i = 0; i < enemyAttacks.Length; i++)
-      {
-        EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-        if (enemyMovement.distanceFromTarget <= enemyAttackAction.maximumAttackDistance && enemyMovement.distanceFromTarget >= enemyAttackAction.minimumAttackDistance)
-        {
-          if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle >= enemyAttackAction.minimumAttackAngle)
-          {
-            if (currentAttack != null)
-              return;
-
-            temporaryScore += enemyAttackAction.attackScore;
-
-            if (temporaryScore > randomValue)
-            {
-              currentAttack = enemyAttackAction;
-            }
-          }
-        }
-      }
+      currentState = state;
     }
 
     private void HandleRecoveryTime()
@@ -125,6 +77,7 @@ namespace Enemy
         if (currentRecoveryTime <= 0)
         {
           isInteracting = false;
+          currentAttack = null;
         }
       }
     }

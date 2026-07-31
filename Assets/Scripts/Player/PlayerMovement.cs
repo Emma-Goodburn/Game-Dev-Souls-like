@@ -76,7 +76,7 @@ namespace Player
         speed = sprintSpeed;
         playerManager.isSprinting = true;
         // Define sprint cost elsewhere
-        playerStats.UseStamina(2);
+        playerStats.UseStamina(playerStats.sprintCost);
       }
       else
       {
@@ -112,7 +112,7 @@ namespace Player
           Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
           myTransform.rotation = rollRotation;
           // Define roll cost elsewhere
-          playerStats.UseStamina(120);
+          playerStats.UseStamina(playerStats.rollCost);
         }
       }
     }
