@@ -5,13 +5,13 @@ namespace Enemy
   public class ChaseState : State
   {
     public AttackState attackState;
-    public IdleState idleState;
+    public DeadState deadState;
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
       // return to idle when dead
       if (enemyStats.isDead)
-        return idleState;
+        return deadState;
 
       // Stay in state while attacks not possible
       if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0)

@@ -7,16 +7,15 @@ namespace Enemy
     public ChaseState chaseState;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
-      // If boss dead never leave idle state
-      if (enemyStats.isDead)
-        return this;
-
       // Find player 
       enemyManager.player = GameObject.Find("Player");
 
-      // Switch state when player found
+      // Switch state when player found and trigger howl animation
       if (enemyManager.player != null)
       {
+        enemyManager.isInteracting = true;
+        enemyManager.currentRecoveryTime = 2.6f;
+        enemyAnimatorHandler.PlayTargetAnimation("Howl", true);
         return chaseState;
       }
       else

@@ -16572,6 +16572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerManager
   isInteracting: 0
   isSprinting: 0
+  inTrigger: 0
 --- !u!114 &821029579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16612,6 +16613,7 @@ MonoBehaviour:
   shiftInput: 0
   leftMouseInput: 0
   rightMouseInput: 0
+  eInput: 0
   rollFlag: 0
   sprintFlag: 0
 --- !u!54 &821029581
@@ -30248,7 +30250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.ChaseState
   attackState: {fileID: 1108977212}
-  idleState: {fileID: 303816281}
+  deadState: {fileID: 0}
 --- !u!4 &1505579784
 Transform:
   m_ObjectHideFlags: 0
