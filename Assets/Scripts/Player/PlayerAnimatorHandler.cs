@@ -102,7 +102,7 @@ namespace Player
     
     private void OnAnimatorMove()
     {
-      if (playerManager.isInteracting == false)
+      if (playerManager.isInteracting == false || Time.timeScale <= 0)
         return;
 
       float delta = Time.deltaTime;
@@ -110,7 +110,12 @@ namespace Player
       Vector3 deltaPosition = animator.deltaPosition;
       deltaPosition.y = 0;
       Vector3 velocity = deltaPosition / delta;
-      playerMovement.rigidbody.linearVelocity = velocity;
+      // Check for NaN values that can occur on unpause
+      Vector3 errorVector = new Vector3(float.NaN, float.NaN, float.NaN);
+      if (velocity.Equals(errorVector))
+        playerMovement.rigidbody.linearVelocity = Vector3.zero;
+      else
+        playerMovement.rigidbody.linearVelocity = velocity;
     }
   }
 }

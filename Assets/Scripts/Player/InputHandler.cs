@@ -15,6 +15,7 @@ namespace Player
     public bool leftMouseInput;
     public bool rightMouseInput;
     public bool eInput;
+    public bool escInput;
 
     public bool rollFlag;
     public bool sprintFlag;
@@ -25,6 +26,7 @@ namespace Player
     PlayerInventory playerInventory;
     PlayerManager playerManager;
     Scene.ViewManager viewManager;
+    Scene.PauseManager pauseManager;
 
     Vector2 movementInput;
     Vector2 cameraInput;
@@ -35,6 +37,7 @@ namespace Player
       playerInventory = GetComponent<PlayerInventory>();
       playerManager = GetComponent<PlayerManager>();
       viewManager = GetComponent<Scene.ViewManager>();
+      pauseManager = GameObject.Find("PauseMenu").GetComponent<Scene.PauseManager>();
     }
 
     public void OnEnable()
@@ -61,6 +64,7 @@ namespace Player
       HandleSprintInput(delta);
       HandleAttackInput(delta);
       HandleInteractInput(delta);
+      HandlePauseInput(delta);
     }
 
     private void HandleMoveInput(float delta)
@@ -95,12 +99,12 @@ namespace Player
       inputActions.PlayerActions.LightAttack.performed += i => leftMouseInput = true;
       inputActions.PlayerActions.HeavyAttack.performed += i => rightMouseInput = true;
 
-      if (leftMouseInput)
+      if (leftMouseInput && Time.timeScale != 0)
       {
         playerAttacker.HandleLightAttack(playerInventory.Weapon);
       }
 
-      if (rightMouseInput)
+      if (rightMouseInput && Time.timeScale != 0)
       {
         playerAttacker.HandleHeavyAttack(playerInventory.Weapon);
       }
@@ -112,6 +116,15 @@ namespace Player
       if (eInput && playerManager.inTrigger)
       {
         viewManager.ChangeScene("Level1");
+      }
+    }
+
+    private void HandlePauseInput(float delta)
+    {
+      escInput = inputActions.PlayerActions.Pause.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+      if (escInput)
+      {
+        pauseManager.PauseGame();
       }
     }
   }

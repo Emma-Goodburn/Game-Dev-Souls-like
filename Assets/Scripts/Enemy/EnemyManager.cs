@@ -5,7 +5,6 @@ namespace Enemy
 {
   public class EnemyManager : MonoBehaviour
   {
-    EnemyMovement enemyMovement;
     EnemyAnimatorHandler enemyAnimatorHandler;
     EnemyStats enemyStats;
     public Rigidbody enemyRigidbody;
@@ -27,7 +26,6 @@ namespace Enemy
 
     private void Awake()
     {
-      enemyMovement = GetComponent<EnemyMovement>();
       enemyAnimatorHandler = GetComponentInChildren<EnemyAnimatorHandler>();
       enemyStats = GetComponent<EnemyStats>();
       navMeshAgent = GetComponent<NavMeshAgent>();

@@ -9,12 +9,12 @@ namespace Enemy
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
-      // return to idle when dead
+      // move to dead state when dead
       if (enemyStats.isDead)
         return deadState;
 
       // Stay in state while attacks not possible
-      if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0)
+      if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0 || Time.timeScale == 0)
         return this;
 
       // calculate movement

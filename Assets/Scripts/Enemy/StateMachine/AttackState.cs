@@ -4,9 +4,14 @@ namespace Enemy
   public class AttackState : State
   {
     public ChaseState chaseState;
+    public DeadState deadState;
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
+      // move to dead state when dead
+      if (enemyStats.isDead)
+        return deadState;
+
       // return to chase if no attacks possible
       if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0 || enemyManager.distanceFromTarget > enemyManager.maximumAttackRange)
         return chaseState;

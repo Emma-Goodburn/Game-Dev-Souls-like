@@ -8,6 +8,7 @@ namespace Player
     Animator animator;
     CameraHandler cameraHandler;
     PlayerMovement playerMovement;
+    PlayerStats playerStats;
 
 
     public bool isInteracting;
@@ -15,6 +16,8 @@ namespace Player
     public bool isSprinting;
 
     public bool inTrigger;
+
+    float timeDead = 0f;
 
     private void Awake()
     {
@@ -26,6 +29,11 @@ namespace Player
       inputHandler = GetComponent<InputHandler>();
       animator = GetComponentInChildren<Animator>();
       playerMovement = GetComponent<PlayerMovement>();
+      playerStats = GetComponent<PlayerStats>();
+
+      // Hide cursor and lock it to the center of the screen
+      Cursor.lockState = CursorLockMode.Locked;
+      Cursor.visible = false;
     }
 
 
@@ -47,6 +55,16 @@ namespace Player
       {
         cameraHandler.FollowTarget(delta);
         cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+      }
+
+      if (playerStats.isDead)
+      {
+        timeDead += delta;
+        Scene.ContextualTextManager.Instance.DisplayMessage("Player defeated", false);
+        if (timeDead >= 3f)
+        {
+          UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        }
       }
     }
 

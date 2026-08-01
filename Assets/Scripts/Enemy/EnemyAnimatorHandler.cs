@@ -17,9 +17,6 @@ namespace Enemy
 
     public void PlayTargetAnimation(string targetAnim, bool isInteracting)
     {
-      if (enemyStats.isDead)
-        return;
-
       animator.applyRootMotion = isInteracting;
       animator.SetBool("isInteracting", isInteracting);
       animator.CrossFade(targetAnim, 0.2f);
@@ -27,12 +24,20 @@ namespace Enemy
     
     private void OnAnimatorMove()
     {
+      if (Time.timeScale <= 0)
+        return;
+
       float delta = Time.deltaTime;
       enemyManager.enemyRigidbody.linearDamping = 0;
-      Vector3 delatPosition = animator.deltaPosition;
-      delatPosition.y = 0;
-      Vector3 velocity = delatPosition / delta;
-      enemyManager.enemyRigidbody.linearVelocity = velocity;
+      Vector3 deltaPosition = animator.deltaPosition;
+      deltaPosition.y = 0;
+      Vector3 velocity = deltaPosition / delta;
+      // Check for NaN values that can occur on unpause
+      Vector3 errorVector = new Vector3(float.NaN, float.NaN, float.NaN);
+      if (velocity.Equals(errorVector))
+        enemyManager.enemyRigidbody.linearVelocity = Vector3.zero;
+      else
+        enemyManager.enemyRigidbody.linearVelocity = velocity;
     }
   }
 }

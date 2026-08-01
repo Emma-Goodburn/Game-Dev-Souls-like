@@ -15,7 +15,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Dummy_T
-    second: {fileID: 2100000, guid: 3dc5b5d0e0e8bf54ea65dd985427cea4, type: 2}
+    second: {fileID: 2100000, guid: 8ad6c240842d0cc44a40564e64e3ef12, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
