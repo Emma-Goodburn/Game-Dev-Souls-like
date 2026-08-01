@@ -4,26 +4,55 @@ namespace Character
 {
   public class DamageCollider : MonoBehaviour
   {
-    Collider damageCollider;
+    Collider[] damageColliders;
 
     int damage;
-    
+
     private void Awake()
     {
-      damageCollider = GetComponent<Collider>();
-      damageCollider.gameObject.SetActive(true);
-      damageCollider.isTrigger = true;
-      damageCollider.enabled = false;
+      damageColliders = GetComponents<Collider>();
+      foreach (Collider damageCollider in damageColliders)
+      {
+        damageCollider.gameObject.SetActive(true);
+        damageCollider.isTrigger = true;
+        damageCollider.enabled = false;
+      }
     }
 
     public void EnableDamageCollider()
     {
-      damageCollider.enabled = true;
+      if (damageColliders.Length == 1)
+        damageColliders[0].enabled = true;
     }
 
     public void DisableDamageCollider()
     {
-      damageCollider.enabled = false;
+      if (damageColliders.Length == 1)
+        damageColliders[0].enabled = false;
+    }
+
+    public void EnableSpecificDamageCollider(string tag)
+    {
+      foreach (Collider damageCollider in damageColliders)
+      {
+        if (damageCollider.tag == tag)
+        {
+          damageCollider.enabled = true;
+          break;
+        }
+      }
+    }
+
+    public void DisableSpecificDamageCollider(string tag)
+    {
+      foreach (Collider damageCollider in damageColliders)
+      {
+        if (damageCollider.tag == tag)
+        {
+          damageCollider.enabled = false;
+          break;
+        }
+      }
     }
     
     private void OnTriggerEnter(Collider collision) {

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fc5bc2e47772b3498ba458a5edcd1c6, type: 3}
-  m_Name: Attack_02
+  m_Name: ScorpionAttack1
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyAttackAction
-  actionAnimation: AttackR
+  actionAnimation: Attack1
   attackScore: 3
   recoveryTime: 2
-  maximumAttackAngle: 5
-  minimumAttackAngle: -15
+  maximumAttackAngle: 10
+  minimumAttackAngle: -10
   minimumAttackDistance: 0
-  maximumAttackDistance: 5.5
+  maximumAttackDistance: 3
   damage: 20
