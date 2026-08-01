@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bf3c3766c82b8204e866b80932d23d6c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195500
+  packageName: Scorpions
+  packageVersion: 1.0
+  assetPath: Assets/Scorpions/Controller/Scorpion.controller
+  uploadId: 433718

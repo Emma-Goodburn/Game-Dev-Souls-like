@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8b4b61aefb7fe3f4486e8ec7832dec3e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195500
+  packageName: Scorpions
+  packageVersion: 1.0
+  assetPath: Assets/Scorpions/Materials/Scorpion_Light.mat
+  uploadId: 433718

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 99135c2f354d9144aab4000ebfbc4c6e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195500
+  packageName: Scorpions
+  packageVersion: 1.0
+  assetPath: Assets/Scorpions/Materials/Scorpion_Black.mat
+  uploadId: 433718
