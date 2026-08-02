@@ -8,12 +8,13 @@ namespace Enemy
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
+      Player.PlayerStats playerStats = enemyManager.player.GetComponent<Player.PlayerStats>();
       // move to dead state when dead
       if (enemyStats.isDead)
         return deadState;
 
       // return to chase if no attacks possible
-      if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0 || enemyManager.distanceFromTarget > enemyManager.maximumAttackRange)
+      if (enemyManager.isInteracting || enemyManager.currentRecoveryTime > 0 || enemyManager.distanceFromTarget > enemyManager.maximumAttackRange || playerStats.isDead)
         return chaseState;
 
       if (enemyManager.currentAttack == null)
@@ -40,8 +41,6 @@ namespace Enemy
       }
     }
       
-
-
     private void GetNewAttack(EnemyManager enemyManager) {
       // check player position
       Vector3 targetDirection = enemyManager.player.transform.position - transform.position;
@@ -55,9 +54,9 @@ namespace Enemy
         EnemyAttackAction enemyAttackAction = enemyManager.enemyAttacks[i];
 
         // find valid attacks
-        if (enemyManager.distanceFromTarget <= enemyAttackAction.maximumAttackDistance && enemyManager.distanceFromTarget <= enemyAttackAction.minimumAttackDistance)
+        if (enemyManager.distanceFromTarget <= enemyAttackAction.maximumAttackDistance && enemyManager.distanceFromTarget >= enemyAttackAction.minimumAttackDistance)
         {
-          if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle <= enemyAttackAction.minimumAttackAngle)
+          if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle >= enemyAttackAction.minimumAttackAngle)
           {
             maxScore += enemyAttackAction.attackScore;
           }

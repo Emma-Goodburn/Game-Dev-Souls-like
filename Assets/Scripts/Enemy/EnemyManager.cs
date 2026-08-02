@@ -12,6 +12,7 @@ namespace Enemy
 
     public EnemyAttackAction[] enemyAttacks;
     public EnemyAttackAction currentAttack;
+    public EnemyAttackAction idleAttack;
 
     public State currentState;
     public bool isInteracting;

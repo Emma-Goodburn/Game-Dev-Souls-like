@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scene
+namespace Scenes
 {
   public class ViewManager : MonoBehaviour
   {

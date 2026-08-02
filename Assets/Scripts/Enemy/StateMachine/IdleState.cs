@@ -14,8 +14,8 @@ namespace Enemy
       if (enemyManager.player != null)
       {
         enemyManager.isInteracting = true;
-        enemyManager.currentRecoveryTime = 2.6f;
-        enemyAnimatorHandler.PlayTargetAnimation("Howl", true);
+        enemyManager.currentRecoveryTime = enemyManager.idleAttack.recoveryTime / 3;
+        enemyAnimatorHandler.PlayTargetAnimation(enemyManager.idleAttack.actionAnimation, true);
         return chaseState;
       }
       else

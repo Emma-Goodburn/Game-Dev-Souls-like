@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scene
+namespace Scenes
 {
   public class LeaveTutorialTrigger : MonoBehaviour
   {

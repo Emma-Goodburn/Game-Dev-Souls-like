@@ -13,7 +13,7 @@ namespace Player
       slider.value = maxHealth;
     }
 
-    public void SetCurrentHealth(int currentHealth)
+    public void SetCurrentHealth(float currentHealth)
     {
       slider.value = currentHealth;
     }

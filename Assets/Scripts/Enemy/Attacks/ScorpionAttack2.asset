@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: ScorpionAttack2
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyAttackAction
   actionAnimation: Attack2
-  attackScore: 3
-  recoveryTime: 2
-  maximumAttackAngle: 35
-  minimumAttackAngle: -35
+  attackScore: 1
+  recoveryTime: 3
+  maximumAttackAngle: 25
+  minimumAttackAngle: -25
   minimumAttackDistance: 0
-  maximumAttackDistance: 5
+  maximumAttackDistance: 6
   damage: 50
+  hasPoisonEffect: 0

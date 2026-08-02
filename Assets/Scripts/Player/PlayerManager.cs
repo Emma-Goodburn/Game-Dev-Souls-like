@@ -9,6 +9,7 @@ namespace Player
     CameraHandler cameraHandler;
     PlayerMovement playerMovement;
     PlayerStats playerStats;
+    Scenes.ViewManager viewManager;
 
 
     public bool isInteracting;
@@ -57,13 +58,17 @@ namespace Player
         cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
       }
 
+      // If playerr dies, display message and wait 3 seconds before restarting from wolf boss
       if (playerStats.isDead)
       {
+        // Track time and display message
         timeDead += delta;
-        Scene.ContextualTextManager.Instance.DisplayMessage("Player defeated", false);
+        Scenes.ContextualTextManager.Instance.DisplayMessage("Player defeated", false);
         if (timeDead >= 3f)
         {
-          UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+          Scenes.ViewManager viewManager = GameObject.FindObjectOfType<Scenes.ViewManager>();
+          // Start again from wolf boss
+          viewManager.ChangeScene("Level1");
         }
       }
     }

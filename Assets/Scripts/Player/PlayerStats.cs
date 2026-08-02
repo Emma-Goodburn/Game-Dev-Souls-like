@@ -24,6 +24,9 @@ namespace Player
     public int lightAttackCost = 50;
     public int heavyAttackCost = 100;
 
+    // Poison variables
+    private float poisonDuration;
+    private float poisonDamage = 5f;
 
     // Required classes
     PlayerAnimatorHandler animatorHandler;
@@ -56,10 +59,27 @@ namespace Player
       {
         currentStaminaRecoveryTime -= Time.deltaTime;
       }
+      if (poisonDuration > 0)
+      {
+        poisonDuration -= Time.deltaTime;
+        currentHealth -= poisonDamage * Time.deltaTime;
+        healthBar.SetCurrentHealth(currentHealth);
+        if (poisonDuration <= 0)
+        {
+          poisonDuration = 0;
+          GameObject.Find("Health Bar Fill").GetComponent<UnityEngine.UI.Image>().color = new Color32(204, 11, 11, 255);
+        }
+        if (currentHealth <= 0)
+        {
+          currentHealth = 0;
+          animatorHandler.PlayTargetAnimation("Death", true);
+          isDead = true;
+        }
+      }
     }
 
     // Reduce health and trigger damage or death animations
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
       currentHealth -= damage;
       healthBar.SetCurrentHealth(currentHealth);
@@ -82,7 +102,7 @@ namespace Player
       staminaBar.SetCurrentStamina(currentStamina);
       currentStaminaRecoveryTime = staminaRegenDelay;
     }
-    
+
     // Heal player on damage dealt
     public void Lifesteal(int damage)
     {
@@ -91,6 +111,13 @@ namespace Player
         currentHealth += damage;
         healthBar.SetCurrentHealth(currentHealth);
       }
+    }
+    
+    // Apply poison to player
+    public void ApplyPoison()
+    {
+      poisonDuration = 5f;
+      GameObject.Find("Health Bar Fill").GetComponent<UnityEngine.UI.Image>().color = new Color32(188, 0, 154, 255);
     }
   }
 }

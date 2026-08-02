@@ -15,5 +15,6 @@ namespace Enemy
     public float maximumAttackDistance = 5;
 
     public int damage;
+    public bool hasPoisonEffect = false;
   }
 }

@@ -25,8 +25,8 @@ namespace Player
     PlayerAttacker playerAttacker;
     PlayerInventory playerInventory;
     PlayerManager playerManager;
-    Scene.ViewManager viewManager;
-    Scene.PauseManager pauseManager;
+    Scenes.ViewManager viewManager;
+    Scenes.PauseManager pauseManager;
 
     Vector2 movementInput;
     Vector2 cameraInput;
@@ -36,8 +36,8 @@ namespace Player
       playerAttacker = GetComponent<PlayerAttacker>();
       playerInventory = GetComponent<PlayerInventory>();
       playerManager = GetComponent<PlayerManager>();
-      viewManager = GetComponent<Scene.ViewManager>();
-      pauseManager = GameObject.Find("PauseMenu").GetComponent<Scene.PauseManager>();
+      viewManager = GetComponent<Scenes.ViewManager>();
+      pauseManager = GameObject.Find("PauseMenu").GetComponent<Scenes.PauseManager>();
     }
 
     public void OnEnable()

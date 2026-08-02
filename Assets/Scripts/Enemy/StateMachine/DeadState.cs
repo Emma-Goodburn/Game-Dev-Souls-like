@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Enemy {
   public class DeadState : State
@@ -6,18 +7,22 @@ namespace Enemy {
     float timeInState = 0f;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
     {
+      Scene currentScene = SceneManager.GetActiveScene();
       // Display message that boss is dead
-      Scene.ContextualTextManager.Instance.DisplayMessage("Boss defeated", false);
+      Scenes.ContextualTextManager.Instance.DisplayMessage("Boss defeated", false);
       timeInState += Time.deltaTime;
       // wait 3 seconds
       if (timeInState >= 3f)
       {
-        Scene.ViewManager viewManager = GameObject.FindObjectOfType<Scene.ViewManager>();
+        Scenes.ViewManager viewManager = GameObject.FindObjectOfType<Scenes.ViewManager>();
         // Show cursor and unlock it to the center of the screen
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        // Load menu scene
-        viewManager.LoadScene("Menu");
+        // Load next scene
+        if (currentScene.name == "Level1")
+          viewManager.ChangeScene("Level2");
+        else if (currentScene.name == "Level2")
+          viewManager.ChangeScene("Menu");
       }
       // Boss is dead so never leave state
       return this;

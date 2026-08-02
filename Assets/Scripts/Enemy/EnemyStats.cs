@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Enemy
 {
@@ -23,14 +24,16 @@ namespace Enemy
     }
 
     // Reduce health and trigger damage or death animations
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
       currentHealth -= damage;
       healthBar.SetCurrentHealth(currentHealth);
       
-      if (currentHealth > 0)
+      // No get hit animation for scorpion boss in level 2
+      if (currentHealth > 0 && SceneManager.GetActiveScene().name == "Level2")
         animator.Play("GetHit");
 
+      // Trigger death animation and set isDead to true
       if (currentHealth <= 0)
       {
         currentHealth = 0;

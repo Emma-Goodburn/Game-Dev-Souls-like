@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Scene
+namespace Scenes
 {
   public class ContextualTextManager : MonoBehaviour
   {
