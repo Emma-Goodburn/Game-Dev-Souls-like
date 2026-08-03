@@ -15,6 +15,7 @@ namespace Enemy {
       if (timeInState >= 3f)
       {
         Scenes.ViewManager viewManager = GameObject.FindObjectOfType<Scenes.ViewManager>();
+        Scenes.VictoryManager victoryManager = GameObject.FindObjectOfType<Scenes.VictoryManager>();
         // Show cursor and unlock it to the center of the screen
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -22,7 +23,7 @@ namespace Enemy {
         if (currentScene.name == "Level1")
           viewManager.ChangeScene("Level2");
         else if (currentScene.name == "Level2")
-          viewManager.ChangeScene("Menu");
+          victoryManager.ShowVictoryScreen();
       }
       // Boss is dead so never leave state
       return this;
